@@ -147,3 +147,23 @@ CREATE TYPE BODY Producto AS
         self.empleado_id := empleado_id;
     END;
 END;
+
+CREATE TABLE Persona_table of Persona(
+persona_id primary key
+);
+
+CREATE TABLE Empleado_Table of Empleado(
+persona_id primary key);
+
+CREATE TABLE Cliente_Table of Cliente(
+persona_id primary key
+);
+CREATE TABLE Producto_Table of Producto(
+producto_id primary key,
+ constraint fk_prod_emp foreign key (empleado_id) references Empleado_Table(persona_id)
+);
+
+INSERT INTO Persona_Table VALUES(1,'Jose','Perez',24);
+INSERT INTO Persona_Table VALUES(2,'Luisa','Gonzalez',50);
+INSERT INTO Persona_Table VALUES(3,'Manuel','Carrasco',60);
+
