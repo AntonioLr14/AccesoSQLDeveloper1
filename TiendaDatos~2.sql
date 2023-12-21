@@ -11,7 +11,7 @@ CREATE or REPLACE TYPE Persona AS OBJECT (
     MEMBER PROCEDURE setApellido(apellido VARCHAR),
     MEMBER FUNCTION getEdad RETURN INT,
     MEMBER PROCEDURE setEdad(edad INT)
-);
+)NOT FINAL;
 
 -- Implementar métodos para PersonaType
 CREATE TYPE BODY Persona AS
@@ -46,6 +46,40 @@ CREATE TYPE BODY Persona AS
     END;
 END;
 
+
+
+-- Crear tipo de dato para Empleado
+CREATE TYPE Empleado UNDER Persona (
+    salario DECIMAL(10, 2),
+    cargo VARCHAR(50),
+    MEMBER FUNCTION getSalario RETURN DECIMAL,
+    MEMBER PROCEDURE setSalario(salario DECIMAL),
+    MEMBER FUNCTION getCargo RETURN VARCHAR,
+    MEMBER PROCEDURE setCargo(cargo VARCHAR)
+);
+
+-- Implementar métodos para EmpleadoType
+CREATE TYPE BODY Empleado AS
+    MEMBER FUNCTION getSalario RETURN DECIMAL IS
+    BEGIN
+        RETURN self.salario;
+    END;
+
+    MEMBER PROCEDURE setSalario(salario DECIMAL) IS
+    BEGIN
+        self.salario := salario;
+    END;
+
+    MEMBER FUNCTION getCargo RETURN VARCHAR IS
+    BEGIN
+        RETURN self.cargo;
+    END;
+
+    MEMBER PROCEDURE setCargo(cargo VARCHAR) IS
+    BEGIN
+        self.cargo := cargo;
+    END;
+END;
 
 -- Crear tabla Empleado con relación de herencia a Persona
 CREATE OR REPLACE TYPE Empleado UNDER Persona (
