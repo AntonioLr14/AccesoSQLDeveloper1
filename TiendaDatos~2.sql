@@ -218,3 +218,49 @@ DBMS_output.put_line('Id: '||p.producto_id||', Nombre_producto: '||p.nombre_prod
 END LOOP;
 END;
 
+-- Procedimiento para insertar una Persona
+CREATE OR REPLACE PROCEDURE InsertarPersona(
+    p_id INT,
+    p_nombre VARCHAR2,
+    p_apellido VARCHAR2,
+    p_edad INT
+) AS
+BEGIN
+    INSERT INTO persona_table VALUES (p_id, p_nombre, p_apellido, p_edad);
+END InsertarPersona;
+
+-- Procedimiento para borrar una Persona
+CREATE OR REPLACE PROCEDURE BorrarPersona(
+    p_id INT
+) AS
+BEGIN
+    DELETE FROM Persona_table WHERE persona_id = p_id;
+END BorrarPersona;
+
+-- Procedimiento para actualizar una Persona
+CREATE OR REPLACE PROCEDURE ActualizarPersona(
+    p_id INT,
+    p_nombre VARCHAR2,
+    p_apellido VARCHAR2,
+    p_edad INT
+) AS
+BEGIN
+    UPDATE Persona_table SET
+        nombre = p_nombre,
+        apellido = p_apellido,
+        edad = p_edad
+    WHERE persona_id = p_id;
+END ActualizarPersona;
+
+-- Procedimiento para consultar todas las Personas
+CREATE OR REPLACE PROCEDURE ConsultarPersonas(persona Persona) AS
+BEGIN
+
+        DBMS_OUTPUT.PUT_LINE(
+            persona.persona_id || ' ' ||
+            persona.nombre || ' ' ||
+            persona.apellido || ' ' ||
+            persona.edad
+        );
+
+END ConsultarPersonas;
