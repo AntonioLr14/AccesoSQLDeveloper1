@@ -165,5 +165,20 @@ producto_id primary key,
 
 INSERT INTO Persona_Table VALUES(1,'Jose','Perez',24);
 INSERT INTO Persona_Table VALUES(2,'Luisa','Gonzalez',50);
-INSERT INTO Persona_Table VALUES(3,'Manuel','Carrasco',60);
+INSERT INTO Persona_Table VALUES(3,'Manuel','Carrasco',20);
+INSERT INTO Persona_Table VALUES(4,'Pedro','Ruiz',54);
+INSERT INTO Persona_Table VALUES(5,'Javier','Garcia',33);
+INSERT INTO Persona_Table VALUES(6,'Miguel','Fernandez',47);
+
+INSERT INTO Cliente_Table VALUES(3,'Manuel','Carrasco',60,'21-12-2023');
+INSERT INTO Cliente_Table VALUES(2,'Luisa','Gonzalez',50,'01-04-2021');
+INSERT INTO Cliente_Table VALUES(6,'Miguel','Fernandez',47,'24-08-2012');
+
+INSERT INTO Empleado_Table VALUES(1,'Jose','Perez',24,2300,'Administrativo');
+INSERT INTO Empleado_Table VALUES(4,'Pedro','Ruiz',54,1800,'Reponedor');
+INSERT INTO Empleado_Table VALUES(5,'Javier','Garcia',33,3500,'Encargado');
+
+INSERT INTO Producto_Table VALUES(1,'Ratón Logitech',50,1);
+INSERT INTO Producto_Table VALUES(2,'Pantalla Corsair',200,5);
+INSERT INTO Producto_Table VALUES(3,'Teclado Keychron',100,1);
 
