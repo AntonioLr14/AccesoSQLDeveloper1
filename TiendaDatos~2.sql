@@ -80,29 +80,70 @@ CREATE TYPE BODY Empleado AS
         self.cargo := cargo;
     END;
 END;
-
--- Crear tabla Empleado con relación de herencia a Persona
-CREATE OR REPLACE TYPE Empleado UNDER Persona (
-    empleado_id INT PRIMARY KEY,
-    salario DECIMAL(10, 2),
-    cargo VARCHAR(50),
-    fecha_contratacion DATE
+-- Crear tipo de dato para Cliente
+CREATE TYPE Cliente UNDER persona (
+    fechaRegistro DATE,
+    MEMBER FUNCTION getFechaRegistro RETURN DATE,
+    MEMBER PROCEDURE setFechaRegistro(fechaRegistro DATE)
 );
 
--- Crear tabla Cliente con relación de herencia a Persona
-CREATE TABLE Cliente UNDER Persona (
-    cliente_id INT PRIMARY KEY,
-    numero_cliente VARCHAR(20),
-    tipo_cliente VARCHAR(50),
-    fecha_registro DATE
-);
+-- Implementar métodos para ClienteType
+CREATE TYPE BODY Cliente AS
+   
+    MEMBER FUNCTION getFechaRegistro RETURN DATE IS
+    BEGIN
+        RETURN self.fechaRegistro;
+    END;
 
--- Crear tabla Producto con relación a Empleado
-CREATE TABLE Producto (
-    producto_id INT PRIMARY KEY,
+    MEMBER PROCEDURE setFechaRegistro(fechaRegistro DATE) IS
+    BEGIN
+        self.fechaRegistro := fecharegistro;
+    END;
+END;
+
+-- Crear tipo de dato para Producto
+CREATE TYPE Producto AS OBJECT (
+    producto_id INT,
     nombre_producto VARCHAR(100),
     precio DECIMAL(10, 2),
     empleado_id INT,
-    fecha_lanzamiento DATE,
-    FOREIGN KEY (empleado_id) REFERENCES Empleado(empleado_id)
+    MEMBER FUNCTION getNombre_producto RETURN VARCHAR,
+    MEMBER PROCEDURE setNombre_producto(nombre_producto VARCHAR),
+    MEMBER FUNCTION getPrecio RETURN DECIMAL,
+    MEMBER PROCEDURE setPrecio(precio DECIMAL),
+    MEMBER FUNCTION getEmpleado_id RETURN INT,
+    MEMBER PROCEDURE setEmpleado_id(empleado_id INT)
 );
+
+-- Implementar métodos para Producto
+CREATE TYPE BODY Producto AS
+    MEMBER FUNCTION getNombre_producto RETURN VARCHAR IS
+    BEGIN
+        RETURN self.nombre_producto;
+    END;
+
+    MEMBER PROCEDURE setNombre_producto(nombre_producto VARCHAR) IS
+    BEGIN
+        self.nombre_producto := nombre_producto;
+    END;
+
+    MEMBER FUNCTION getPrecio RETURN DECIMAL IS
+    BEGIN
+        RETURN self.precio;
+    END;
+
+    MEMBER PROCEDURE setPrecio(precio DECIMAL) IS
+    BEGIN
+        self.precio := precio;
+    END;
+
+    MEMBER FUNCTION getEmpleado_id RETURN INT IS
+    BEGIN
+        RETURN self.empleado_id;
+    END;
+
+    MEMBER PROCEDURE setEmpleado_id(empleado_id INT) IS
+    BEGIN
+        self.empleado_id := empleado_id;
+    END;
+END;
