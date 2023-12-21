@@ -181,4 +181,40 @@ INSERT INTO Empleado_Table VALUES(5,'Javier','Garcia',33,3500,'Encargado');
 INSERT INTO Producto_Table VALUES(1,'Ratón Logitech',50,1);
 INSERT INTO Producto_Table VALUES(2,'Pantalla Corsair',200,5);
 INSERT INTO Producto_Table VALUES(3,'Teclado Keychron',100,1);
+ 
+DECLARE 
+CURSOR persona_cursor IS SELECT * FROM persona_table;
+BEGIN
+FOR p IN persona_cursor
+LOOP
+DBMS_output.put_line('Id: '||p.persona_id||', Nombre: '||p.nombre||', Apellido: '||p.apellido||', Edad: '||p.edad);
+END LOOP;
+END;
+
+DECLARE 
+CURSOR cliente_cursor IS SELECT * FROM cliente_table;
+BEGIN
+FOR c IN cliente_cursor
+LOOP
+DBMS_output.put_line('Id: '||c.persona_id||', Nombre: '||c.nombre||', Apellido: '||c.apellido||', Edad: '||c.edad||', Fecha_Registro: '||c.fecharegistro);
+END LOOP;
+END;
+
+DECLARE 
+CURSOR empleado_cursor IS SELECT * FROM empleado_table;
+BEGIN
+FOR e IN empleado_cursor
+LOOP
+DBMS_output.put_line('Id: '||e.persona_id||', Nombre: '||e.nombre||', Apellido: '||e.apellido||', Edad: '||e.edad||', Salario: '||e.salario||', Cargo: '||e.cargo);
+END LOOP;
+END;
+
+DECLARE 
+CURSOR producto_cursor IS SELECT * FROM producto_table;
+BEGIN
+FOR p IN producto_cursor
+LOOP
+DBMS_output.put_line('Id: '||p.producto_id||', Nombre_producto: '||p.nombre_producto||', Precio: '||p.precio||', Empleado: '||p.empleado_id);
+END LOOP;
+END;
 
