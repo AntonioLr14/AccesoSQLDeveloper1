@@ -220,13 +220,10 @@ END;
 
 -- Procedimiento para insertar una Persona
 CREATE OR REPLACE PROCEDURE InsertarPersona(
-    p_id INT,
-    p_nombre VARCHAR2,
-    p_apellido VARCHAR2,
-    p_edad INT
+  p persona
 ) AS
 BEGIN
-    INSERT INTO persona_table VALUES (p_id, p_nombre, p_apellido, p_edad);
+    INSERT INTO persona_table VALUES (p.persona_id,p.nombre,p.apellido,p.edad);
 END InsertarPersona;
 
 -- Procedimiento para borrar una Persona
