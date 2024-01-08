@@ -236,17 +236,14 @@ END BorrarPersona;
 
 -- Procedimiento para actualizar una Persona
 CREATE OR REPLACE PROCEDURE ActualizarPersona(
-    p_id INT,
-    p_nombre VARCHAR2,
-    p_apellido VARCHAR2,
-    p_edad INT
+    p persona
 ) AS
 BEGIN
     UPDATE Persona_table SET
-        nombre = p_nombre,
-        apellido = p_apellido,
-        edad = p_edad
-    WHERE persona_id = p_id;
+        nombre = p.nombre,
+        apellido = p.apellido,
+        edad = p.edad
+    WHERE persona_id = p.persona_id;
 END ActualizarPersona;
 
 -- Procedimiento para consultar todas las Personas
@@ -261,3 +258,42 @@ BEGIN
         );
 
 END ConsultarPersonas;
+
+-- Procedimiento para insertar un Producto
+CREATE OR REPLACE PROCEDURE InsertarProducto(
+  p producto
+) AS
+BEGIN
+    INSERT INTO producto_table VALUES (p.producto_id,p.nombre_producto,p.precio,p.empleado_id);
+END InsertarProducto;
+
+-- Procedimiento para borrar una Persona
+CREATE OR REPLACE PROCEDURE BorrarProducto(
+    p_id INT
+) AS
+BEGIN
+    DELETE FROM Producto_table WHERE producto_id = p_id;
+END BorrarProducto;
+
+CREATE OR REPLACE PROCEDURE ActualizarProducto(
+   p producto
+) AS
+BEGIN
+    UPDATE Producto_table SET
+        nombre_producto = p.nombre_producto,
+        precio = p.precio,
+        empleado_id = p.empleado_id
+    WHERE producto_id = p.producto_id;
+END ActualizarProducto;
+
+CREATE OR REPLACE PROCEDURE ConsultarProductos(producto Producto) AS
+BEGIN
+        --SELECT * from Producto_table
+        DBMS_OUTPUT.PUT_LINE(
+            producto.producto_id || ' ' ||
+            producto.nombre_producto || ' ' ||
+            producto.precio || ' ' ||
+            producto.empleado_id
+        );
+
+END ConsultarProductos;
