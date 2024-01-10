@@ -1,5 +1,5 @@
--- Crear tabla Persona
--- Crear tipo de dato para Persona
+------------------------------------ CREACION DE OBJETOS Y PROCEDIMIENTOS DE CADA OBJETO -------------------------------
+-- Crear objeto Persona
 CREATE or REPLACE TYPE Persona AS OBJECT (
     persona_id INT,
     nombre VARCHAR(50),
@@ -13,7 +13,7 @@ CREATE or REPLACE TYPE Persona AS OBJECT (
     MEMBER PROCEDURE setEdad(edad INT)
 )NOT FINAL;
 
--- Implementar m�todos para PersonaType
+-- Implementar metodos para Persona
 CREATE TYPE BODY Persona AS
     MEMBER FUNCTION getNombre RETURN VARCHAR IS
     BEGIN
@@ -48,7 +48,7 @@ END;
 
 
 
--- Crear tipo de dato para Empleado
+-- Crear objeto Empleado
 CREATE TYPE Empleado UNDER Persona (
     salario DECIMAL(10, 2),
     cargo VARCHAR(50),
@@ -58,7 +58,7 @@ CREATE TYPE Empleado UNDER Persona (
     MEMBER PROCEDURE setCargo(cargo VARCHAR)
 );
 
--- Implementar m�todos para EmpleadoType
+-- Implementar metodos para Empleado
 CREATE TYPE BODY Empleado AS
     MEMBER FUNCTION getSalario RETURN DECIMAL IS
     BEGIN
@@ -80,14 +80,14 @@ CREATE TYPE BODY Empleado AS
         self.cargo := cargo;
     END;
 END;
--- Crear tipo de dato para Cliente
+-- Crear objeto Cliente
 CREATE TYPE Cliente UNDER persona (
     fechaRegistro DATE,
     MEMBER FUNCTION getFechaRegistro RETURN DATE,
     MEMBER PROCEDURE setFechaRegistro(fechaRegistro DATE)
 );
 
--- Implementar m�todos para ClienteType
+-- Implementar metodos para Cliente
 CREATE TYPE BODY Cliente AS
    
     MEMBER FUNCTION getFechaRegistro RETURN DATE IS
@@ -101,7 +101,7 @@ CREATE TYPE BODY Cliente AS
     END;
 END;
 
--- Crear tipo de dato para Producto
+-- Crear objeto Producto
 CREATE TYPE Producto AS OBJECT (
     producto_id INT,
     nombre_producto VARCHAR(100),
@@ -115,7 +115,7 @@ CREATE TYPE Producto AS OBJECT (
     MEMBER PROCEDURE setEmpleado_id(empleado_id INT)
 );
 
--- Implementar m�todos para Producto
+-- Implementar metodos para Producto
 CREATE TYPE BODY Producto AS
     MEMBER FUNCTION getNombre_producto RETURN VARCHAR IS
     BEGIN
@@ -147,22 +147,28 @@ CREATE TYPE BODY Producto AS
         self.empleado_id := empleado_id;
     END;
 END;
-
+---------------------------- CREACION DE TABLAS DE LOS OBJETOS------------------
+--Creacion de tabla Persona
 CREATE TABLE Persona_table of Persona(
 persona_id primary key
 );
-
+--Creacion de tabla Empleado
 CREATE TABLE Empleado_Table of Empleado(
 persona_id primary key);
 
+--Creacion de tabla Cliente
 CREATE TABLE Cliente_Table of Cliente(
 persona_id primary key
 );
+
+--Creacion de tabla Producto
 CREATE TABLE Producto_Table of Producto(
 producto_id primary key,
  constraint fk_prod_emp foreign key (empleado_id) references Empleado_Table(persona_id)
 );
 
+
+------------------------- INTRODUCCION DE VALORES EN CADA TABLA---------------------------
 INSERT INTO Persona_Table VALUES(1,'Jose','Perez',24);
 INSERT INTO Persona_Table VALUES(2,'Luisa','Gonzalez',50);
 INSERT INTO Persona_Table VALUES(3,'Manuel','Carrasco',20);
@@ -178,10 +184,14 @@ INSERT INTO Empleado_Table VALUES(1,'Jose','Perez',24,2300,'Administrativo');
 INSERT INTO Empleado_Table VALUES(4,'Pedro','Ruiz',54,1800,'Reponedor');
 INSERT INTO Empleado_Table VALUES(5,'Javier','Garcia',33,3500,'Encargado');
 
-INSERT INTO Producto_Table VALUES(1,'Rat�n Logitech',50,1);
+INSERT INTO Producto_Table VALUES(1,'Rat?n Logitech',50,1);
 INSERT INTO Producto_Table VALUES(2,'Pantalla Corsair',200,5);
 INSERT INTO Producto_Table VALUES(3,'Teclado Keychron',100,1);
- 
+
+
+
+
+ --------------------------  CREACION DE UN CURSOR POR CADA TABLA ------------------------------------
 DECLARE 
 CURSOR persona_cursor IS SELECT * FROM persona_table;
 BEGIN
@@ -217,7 +227,7 @@ LOOP
 DBMS_output.put_line('Id: '||p.producto_id||', Nombre_producto: '||p.nombre_producto||', Precio: '||p.precio||', Empleado: '||p.empleado_id);
 END LOOP;
 END;
-
+------------------------------------  CREACION DE PROCEDIMIENTOS POR CADA OBJETO------------------------------------
 -- Procedimiento para insertar una Persona
 CREATE OR REPLACE PROCEDURE InsertarPersona(
   p persona
@@ -318,7 +328,7 @@ BEGIN
     INSERT INTO empleado_table VALUES (e.persona_id,e.nombre,e.apellido,e.edad,e.salario,e.cargo);
 END InsertarEmpleado;
 
--- Procedimiento para borrar una Empleado
+-- Procedimiento para borrar un Empleado
 CREATE OR REPLACE PROCEDURE BorrarEmpleado(
     e_id INT
 ) AS
@@ -362,3 +372,107 @@ BEGIN
         );
 
 END ConsultarEmpleados;
+
+--Procedimiento para insetar un Cliente
+CREATE OR REPLACE PROCEDURE InsertarCliente(
+  c cliente
+) AS
+BEGIN
+    INSERT INTO cliente_table VALUES (c.persona_id,c.nombre,c.apellido,c.edad,c.fechaRegistro);
+END InsertarCliente;
+
+
+-- Procedimiento para borrar un Cliente
+CREATE OR REPLACE PROCEDURE BorrarCliente(
+    c_id INT
+) AS
+BEGIN
+    DELETE FROM cliente_table WHERE persona_id = c_id;
+END BorrarCliente;
+
+-- Procedimiento para actualizar un Cliente
+CREATE OR REPLACE PROCEDURE ActualizarCliente(
+    c cliente
+) AS
+BEGIN
+    UPDATE cliente_table SET
+        nombre = c.nombre,
+        apellido = c.apellido,
+        edad = c.edad,
+        fecharegistro=c.fecharegistro
+    WHERE persona_id = c.persona_id;
+END ActualizarCliente;
+
+ -- Procedimiento para consultar un empleado por id
+CREATE OR REPLACE PROCEDURE ConsultarClientes(condicion NUMBER) AS
+id NUMBER;
+nombre VARCHAR2(255);
+apellido VARCHAR2(255);
+edad NUMBER;
+fecharegistro VARCHAR2(255);
+c cliente;
+BEGIN
+        SELECT * into id,nombre,apellido,edad,fecharegistro FROM cliente_table where persona_id=condicion;
+        c:=new Cliente(id,nombre,apellido,edad,fecharegistro);
+        DBMS_OUTPUT.PUT_LINE(
+            c.persona_id || ' ' ||
+            c.nombre || ' ' ||
+            c.apellido || ' ' ||
+            c.edad || ' ' ||
+            c.fecharegistro
+        );
+END ConsultarClientes;
+
+
+
+-----------------------       CREACION DE OBJETOS   --------------------------
+
+
+DECLARE 
+persona1 persona;
+persona2 persona;
+empleado1 empleado;
+empleado2 empleado;
+cliente1 cliente;
+cliente2 cliente;
+producto1 producto;
+producto2 producto;
+BEGIN
+persona1:= new Persona(7,'Jose Luis','Perales',77);
+persona2:=new Persona(8,'Shakira','Mebarak',45);
+empleado1:=new Empleado(2,'Jesus','Boulton',22,1500,'Cajero');
+empleado2:=new Empleado(3,'Manuela','Carmena',68,4000,'Jefa de tienda');
+cliente1:=new Cliente(1,'Miguel','Bose',60,'14/02/2017');
+cliente2:=new Cliente(4,'Ansu','Fati',20,'12/04/2022');
+producto1:=new Producto(4,'Silla Ergonomica',80,4);
+producto2:=new Producto(5,'Auriculares de diadema',115,5);
+/*
+insertarPersona(persona1);
+insertarEmpleado(empleado1);
+insertarCliente(cliente1);
+insertarProducto(producto1);
+insertarPersona(persona2);
+insertarEmpleado(empleado2);
+insertarCliente(cliente2);
+insertarProducto(producto2);
+
+borrarPersona(7);
+borrarEmpleado(2);
+borrarCliente(4);
+borrarProducto(4);
+
+persona2:=new Persona(8,'Pique','Mebarak',45);
+empleado2:=new Empleado(3,'Luisa','Carmena',68,4000,'Jefa de tienda');
+cliente2:=new Cliente(4,'Pedri','Gonzalez',20,'12/04/2022');
+producto2:=new Producto(5,'Casco de moto',115,5);
+actualizarPersona(persona2);
+actualizarEmpleado(empleado2);
+ActualizarCliente(cliente2);
+ActualizarProducto(producto2);
+
+consultarPersonas(7);
+consultarEmpleados(2);
+consultarClientes(4);
+consultarProductos(4);
+*/
+END;
