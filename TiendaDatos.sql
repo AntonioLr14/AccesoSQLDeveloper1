@@ -255,7 +255,7 @@ BEGIN
         edad = p.edad
     WHERE persona_id = p.persona_id;
 END ActualizarPersona;
-
+/*
  -- Procedimiento para consultar una persona por id
 CREATE OR REPLACE PROCEDURE ConsultarPersonas(condicion NUMBER) AS
 p persona;
@@ -273,6 +273,27 @@ p:=new Persona(id,nombre,apellido,edad);
             p.edad
         );
 
+END ConsultarPersonas;*/
+
+create or replace PROCEDURE ConsultarPersonas(condicion NUMBER) AS
+p persona;
+id NUMBER;
+nombre VARCHAR2(255);
+apellido VARCHAR2(255);
+edad NUMBER;
+BEGIN
+SELECT * into id,nombre,apellido,edad from persona_table where persona_id=condicion;
+p:=new Persona(id,nombre,apellido,edad);
+        DBMS_OUTPUT.PUT_LINE(
+            p.persona_id || ' ' ||
+            p.nombre || ' ' ||
+            p.apellido || ' ' ||
+            p.edad
+        );
+SELECT VALUE(e) into p from persona_table e WHERE persona_id=condicion;
+        DBMS_OUTPUT.PUT_LINE(
+        p.getNombre()
+        );
 END ConsultarPersonas;
 
 -- Procedimiento para insertar un Producto
@@ -469,10 +490,9 @@ actualizarPersona(persona2);
 actualizarEmpleado(empleado2);
 ActualizarCliente(cliente2);
 ActualizarProducto(producto2);
-
+*/
 consultarPersonas(7);
 consultarEmpleados(2);
 consultarClientes(4);
 consultarProductos(4);
-*/
 END;
